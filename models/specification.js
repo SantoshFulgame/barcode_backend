@@ -4,51 +4,62 @@ const specificationSchema = new mongoose.Schema({
   model: { type: String, required: true },
   pvInput: {
     maxPvInputPower: String,
-    mpptTrackingVoltageRange: String,
+    pvInputOperatingVoltageRange: String,
     ratedVoltage: String,
-    maxPvInputVoltageVoc: String,
-    maxPvInputCurrent: String,
+    maxPvInputVoltage: String,
+    maxOperatingPvInputCurrent: String,
+    iscPvAbsoluteMaximum: String,
     mpptTrackingChannels: String,
+    maxInverterBackfeedToArray: String,
   },
-  batteryAndCharging: {
+  dcinputbattery: {
     batteryType: String,
     ratedBatteryVoltage: String,
     batteryVoltageRange: String,
-    maxPvChargingCurrent: String,
+    maxContinuousCurrent: String,
     maxAcChargingCurrent: String,
-    maxChargingCurrent: String,
   },
   gridConnectedOperation: {
-    ratedOutputPower: String,
+    maxContinuousPower: String,
     ratedOutputVoltage: String,
     gridVoltageRange: String,
     ratedOutputFrequency: String,
     frequencyRange: String,
     ratedOutputCurrent: String,
+    maxContinuousCurrent: String,
+    inrushCurrent: String,
     powerFactor: String,
+    maxOutputFaultCurrent: String,
+    maxOutputOvercurrentProtection: String,
   },
   offGridOperation: {
     ratedInputVoltage: String,
     mainsInputVoltageRange: String,
     ratedInputFrequency: String,
     inputFrequencyRange: String,
-  },
-  acOutput: {
-    ratedOutputPower: String,
-    ratedOutputVoltage: String,
-    outputVoltageAccuracy: String,
-    outputFrequencyAccuracy: String,
-    outputWave: String,
+    acOutput: {
+      maxContinuousPower: String,
+      ratedOutputVoltage: String,
+      outputVoltageAccuracy: String,
+      ratedInputFrequency: String,
+      outputFrequencyAccuracy: String,
+      outputWave: String,
+    },
   },
   mixedOperation: {
     ratedInputVoltage: String,
     mainsInputVoltageRange: String,
     ratedInputFrequency: String,
     inputFrequencyRange: String,
+    maxContinuousCurrent: String,
     acOutput: {
-      ratedOutputPower: String,
+      maxContinuousPower: String,
       ratedVoltage: String,
+      maxOutputFaultCurrent: String,
+      maxOutputOvercurrentProtection: String,
       outputCurrent: String,
+      maxContinuousCurrent: String,
+      inrushCurrent: String,
     },
   },
   generalParameters: {
@@ -72,7 +83,7 @@ const specificationSchema = new mongoose.Schema({
   environment: {
     operatingTemperature: String,
     storageTemperature: String,
-    noise: String,
+    noiseLevel: String,
     elevation: String,
     humidity: String,
   },
@@ -85,3 +96,4 @@ const specificationSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('Specification', specificationSchema);
+
