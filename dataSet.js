@@ -1,67 +1,76 @@
-const Specification = require('./models/specification');
-
-// Data for the three models
+// Data for the specifications
 const specificationsData = [
   {
     model: "XH 3300 - Alpha",
     pvInput: {
       maxPvInputPower: "5000W",
-      mpptTrackingVoltageRange: "40Vdc-450Vdc",
-      ratedVoltage: "360Vdc",
-      maxPvInputVoltageVoc: "500Vdc",
-      maxPvInputCurrent: "18A",
-      mpptTrackingChannels: "1 Routed"
+      pvInputOperatingVoltageRange: "40Vdc-450Vdc",
+      ratedVoltage: "240Vdc",
+      maxPvInputVoltage: "500Vdc",
+      maxOperatingPvInputCurrent: "18A",
+      iscPvAbsoluteMaximum: "18A",
+      mpptTrackingChannels: "1 Routed",
+      maxInverterBackfeedToArray: "0A",
     },
-    batteryAndCharging: {
+    dcinputbattery: {
       batteryType: "Lead acid Battery/Lithium Battery",
-      ratedBatteryVoltage: "24Vdc",
-      batteryVoltageRange: "21-30Vdc (default)",
-      maxPvChargingCurrent: "120A",
+      ratedBatteryVoltage: "48Vdc",
+      batteryVoltageRange: "42-60Vdc (default)",
+      maxContinuousCurrent: "120A",
       maxAcChargingCurrent: "80A",
-      maxChargingCurrent: "120A"
     },
     gridConnectedOperation: {
-      ratedOutputPower: "3300W",
-      ratedOutputVoltage: "220Vac / 230Vac / 240Vac",
-      gridVoltageRange: "187Vac ~ 264Vac",
-      ratedOutputFrequency: "50Hz / 60Hz",
+      maxContinuousPower: "3300W",
+      ratedOutputVoltage: "220Vac/230Vac/240Vac",
+      gridVoltageRange: "187Vac-264Vac",
+      ratedOutputFrequency: "50Hz/60Hz",
       frequencyRange: "47Hz~52Hz(50Hz),57Hz~62Hz(60Hz)",
       ratedOutputCurrent: "14.5A/13.9A/13.3A",
-      powerFactor: "> 0.98(Rated Power)"
+      maxContinuousCurrent: "13.9Aac",
+      inrushCurrent: "25.5A per phase / 20ms",
+      powerFactor: ">0.98(Rated Power)",
+      maxOutputFaultCurrent: "68A per phase / 1ms",
+      maxOutputOvercurrentProtection: "68A per phase",
     },
     offGridOperation: {
-      ratedInputVoltage: "220V/ 230V / 240V",
+      ratedInputVoltage: "220V/230V/240V",
       mainsInputVoltageRange: "165Vac-280Vac / 120Vac~280Vac (Can be set)",
-      ratedInputFrequency: "50Hz / 60Hz",
-      inputFrequencyRange: "45Hz~55Hz(50Hz),55Hz~65Hz(60Hz)"
-    },
-    acOutput: {
-      ratedOutputPower: "3300W",
-      ratedOutputVoltage: "220V / 230V / 240V",
-      outputVoltageAccuracy: "±2%",
-      outputFrequencyAccuracy: "±1%",
-      outputWave: "Pure Sine Wave"
+      ratedInputFrequency: "50Hz/60Hz",
+      inputFrequencyRange: "45Hz~55Hz(50Hz),55Hz~65Hz(60Hz)",
+      acOutput: {
+        maxContinuousPower: "3300W",
+        ratedOutputVoltage: "220V / 230V / 240V",
+        outputVoltageAccuracy: "±2%",
+        ratedInputFrequency: "50Hz/60Hz",
+        outputFrequencyAccuracy:"±1%",
+        outputWave: "Pure Sine Wave",
+      },
     },
     mixedOperation: {
       ratedInputVoltage: "220V / 230V / 240V",
       mainsInputVoltageRange: "187Vac-264Vac",
-      ratedInputFrequency: "50Hz /60Hz",
+      ratedInputFrequency: "50Hz/60Hz",
       inputFrequencyRange: "47Hz~52Hz(50Hz),57Hz-62Hz(60Hz)",
+      maxContinuousCurrent:"25.1Aac",
       acOutput: {
-        ratedOutputPower: "3300W",
+        maxContinuousPower: "3300W",
         ratedVoltage: "220Vac / 230Vac / 240Vac",
-        outputCurrent: "14.5A/13.9A/13.3A"
-      }
+        maxOutputFaultCurrent: "68A per phase / 1ms",
+        maxOutputOvercurrentProtection: "68A per phase",
+        outputCurrent: "14.5A/13.9A/13.3A",
+        maxContinuousCurrent: "13.9Aac",
+        inrushCurrent: "25.5A per phase / 20ms",
+      },
     },
     generalParameters: {
       maxConversionEfficiency: "94% (peak value)",
       mpptTrackingEfficiency: "≥99.9",
       transferTime: "10ms(Typical value)",
-      display: "LCD+LED",
-      coolingMethod: "Cooling fan in intelligent control",
+      display: "LCD + LED",
+      coolingMethod: "Cooling fan in intelligent contro",
       communication: "RS485/Mobile APP(WIFI Monitoring or GPRS monitoring)(Optional)",
       protectionDegree: "IP20",
-      installation: "Wall-Mounted"
+      installation: "Wall-Mounted",
     },
     protection: {
       batteryLowVoltageAlarm: "22Vdc (default value)",
@@ -69,188 +78,211 @@ const specificationsData = [
       antiIslandingProtection: "≤2S",
       overloadPowerProtection: "Automatic Protection (battery mode), Circuit Breaker or Insurance (AC mode)",
       outputShortCircuitProtection: "Automatic Protection (battery mode),Circuit Breaker or Insurance (AC mode)",
-      temperatureProtection: "> 90°C (turn off inverter and charging)"
+      temperatureProtection: "> 90°C (turn off inverter and charging)",
     },
     environment: {
       operatingTemperature: "-10°C~50°C",
       storageTemperature: "-15°C~60°C",
-      noise: "≤55dB",
+      noiseLevel: "≤55dB",
       elevation: "2000m ( More than derating)",
-      humidity: "0%~95% ,No condensation"
+      humidity: "0%~95% ,No condensation",
     },
     dimensionsAndWeight: {
       productSize: "325*275*102",
       packageSize: "400*330*167",
-      netWeight: "6",
-      grossWeight: "6.5"
-    }
+      netWeight: "5",
+      grossWeight: "6.5",
+    },
   },
   {
     model: "XH 5000 - Alpha",
     pvInput: {
       maxPvInputPower: "7000W",
-      mpptTrackingVoltageRange: "40Vdc-500Vdc",
-      ratedVoltage: "400Vdc",
-      maxPvInputVoltageVoc: "600Vdc",
-      maxPvInputCurrent: "20A",
-      mpptTrackingChannels: "2 Routed"
+      pvInputOperatingVoltageRange: "80Vdc-450Vdc",
+      ratedVoltage: "240Vdc",
+      maxPvInputVoltage: "500Vdc",
+      maxOperatingPvInputCurrent: "27A",
+      iscPvAbsoluteMaximum: "27A",
+      mpptTrackingChannels: "1 Routed",
+      maxInverterBackfeedToArray: "0A",
     },
-    batteryAndCharging: {
-      batteryType: "Lithium Battery",
+    dcinputbattery: {
+      batteryType: "Lead acid Battery/Lithium Battery",
       ratedBatteryVoltage: "48Vdc",
-      batteryVoltageRange: "45-54Vdc (default)",
-      maxPvChargingCurrent: "150A",
-      maxAcChargingCurrent: "100A",
-      maxChargingCurrent: "150A"
+      batteryVoltageRange: "42-60Vdc (default)",
+      maxContinuousCurrent: "120A",
+      maxAcChargingCurrent: "80A",
     },
     gridConnectedOperation: {
-      ratedOutputPower: "5000W",
-      ratedOutputVoltage: "230Vac / 240Vac",
-      gridVoltageRange: "187Vac ~ 264Vac",
-      ratedOutputFrequency: "50Hz / 60Hz",
+      maxContinuousPower: "5000W",
+      ratedOutputVoltage: "220Vac/230Vac/240Vac",
+      gridVoltageRange: "187Vac-264Vac",
+      ratedOutputFrequency: "50Hz/60Hz",
       frequencyRange: "47Hz~52Hz(50Hz),57Hz~62Hz(60Hz)",
-      ratedOutputCurrent: "21.7A/20.8A",
-      powerFactor: "> 0.98(Rated Power)"
+      ratedOutputCurrent: "28.6A/27.4A/26.2A",
+      maxContinuousCurrent: "21.7Aac",
+      inrushCurrent: "25.5A per phase / 20ms",
+      powerFactor: ">0.98(Rated Power)",
+      maxOutputFaultCurrent: "68A per phase / 1ms",
+      maxOutputOvercurrentProtection: "68A per phase",
     },
     offGridOperation: {
-      ratedInputVoltage: "230V / 240V",
-      mainsInputVoltageRange: "165Vac-280Vac",
-      ratedInputFrequency: "50Hz / 60Hz",
-      inputFrequencyRange: "45Hz~55Hz(50Hz),55Hz~65Hz(60Hz)"
-    },
-    acOutput: {
-      ratedOutputPower: "5000W",
-      ratedOutputVoltage: "230V / 240V",
-      outputVoltageAccuracy: "±1%",
-      outputFrequencyAccuracy: "±0.5%",
-      outputWave: "Pure Sine Wave"
+      ratedInputVoltage: "220V/230V/240V",
+      mainsInputVoltageRange: "165Vac-280Vac / 120Vac~280Vac (Can be set)",
+      ratedInputFrequency: "50Hz/60Hz",
+      inputFrequencyRange: "45Hz~55Hz(50Hz),55Hz~65Hz(60Hz)",
+      acOutput: {
+        maxContinuousPower: "5000W",
+        ratedOutputVoltage: "220V / 230V / 240V",
+        outputVoltageAccuracy: "±2%",
+        ratedInputFrequency: "50Hz/60Hz",
+        outputFrequencyAccuracy:"±1%",
+        outputWave: "Pure Sine Wave",
+      },
     },
     mixedOperation: {
-      ratedInputVoltage: "230V / 240V",
+      ratedInputVoltage: "220V / 230V / 240V",
       mainsInputVoltageRange: "187Vac-264Vac",
-      ratedInputFrequency: "50Hz / 60Hz",
-      inputFrequencyRange: "47Hz~52Hz(50Hz),57Hz~62Hz(60Hz)",
+      ratedInputFrequency: "50Hz/60Hz",
+      inputFrequencyRange: "47Hz~52Hz(50Hz),57Hz-62Hz(60Hz)",
+      maxContinuousCurrent:"41.2Aac",
       acOutput: {
-        ratedOutputPower: "5000W",
-        ratedVoltage: "230Vac / 240Vac",
-        outputCurrent: "21.7A/20.8A"
-      }
+        maxContinuousPower: "5000W",
+        ratedVoltage: "220Vac / 230Vac / 240Vac",
+        maxOutputFaultCurrent: "68A per phase / 1ms",
+        maxOutputOvercurrentProtection: "68A per phase",
+        outputCurrent: "28.6A/27.4A/26.2A",
+        maxContinuousCurrent: "21.7Aac",
+        inrushCurrent: "25.5A per phase / 20ms",
+      },
     },
     generalParameters: {
-      maxConversionEfficiency: "96% (peak value)",
-      mpptTrackingEfficiency: "≥99.9%",
+      maxConversionEfficiency: "94% (peak value)",
+      mpptTrackingEfficiency: "≥99.9",
       transferTime: "10ms(Typical value)",
-      display: "LCD+LED",
-      coolingMethod: "Cooling fan in intelligent control",
-      communication: "RS485/WIFI Monitoring (Optional)",
+      display: "LCD + LED",
+      coolingMethod: "Cooling fan in intelligent contro",
+      communication: "RS485/Mobile APP(WIFI Monitoring or GPRS monitoring)(Optional)",
       protectionDegree: "IP20",
-      installation: "Wall-Mounted"
+      installation: "Wall-Mounted",
     },
     protection: {
-      batteryLowVoltageAlarm: "46Vdc",
-      batteryLowVoltageProtection: "45Vdc",
+      batteryLowVoltageAlarm: "44Vdc (default value)",
+      batteryLowVoltageProtection: "42Vdc (default value)",
       antiIslandingProtection: "≤2S",
-      overloadPowerProtection: "Automatic Protection",
-      outputShortCircuitProtection: "Automatic Protection",
-      temperatureProtection: "> 90°C"
+      overloadPowerProtection: "Automatic Protection (battery mode), Circuit Breaker or Insurance (AC mode)",
+      outputShortCircuitProtection: "Automatic Protection (battery mode),Circuit Breaker or Insurance (AC mode)",
+      temperatureProtection: "> 90°C (turn off inverter and charging)",
     },
     environment: {
-      operatingTemperature: "-10°C~55°C",
+      operatingTemperature: "-10°C~50°C",
       storageTemperature: "-15°C~60°C",
-      noise: "≤50dB",
-      elevation: "3000m (derating above 2000m)",
-      humidity: "0%~95%, No condensation"
+      noiseLevel: "≤55dB",
+      elevation: "2000m ( More than derating)",
+      humidity: "0%~95% ,No condensation",
     },
     dimensionsAndWeight: {
-      productSize: "400*320*120",
-      packageSize: "470*370*180",
+      productSize: "390*320*112",
+      packageSize: "465*375*187",
       netWeight: "8",
-      grossWeight: "8.5"
-    }
+      grossWeight: "9.5",
+    },
   },
   {
     model: "XH 6300 - Alpha",
     pvInput: {
-      maxPvInputPower: "8000W",
-      mpptTrackingVoltageRange: "50Vdc-500Vdc",
-      ratedVoltage: "450Vdc",
-      maxPvInputVoltageVoc: "650Vdc",
-      maxPvInputCurrent: "22A",
-      mpptTrackingChannels: "3 Routed"
+      maxPvInputPower: "7000W",
+      pvInputOperatingVoltageRange: "80Vdc-450Vdc",
+      ratedVoltage: "240Vdc",
+      maxPvInputVoltage: "500Vdc",
+      maxOperatingPvInputCurrent: "27A",
+      iscPvAbsoluteMaximum: "27A",
+      mpptTrackingChannels: "1 Routed",
+      maxInverterBackfeedToArray: "0A",
     },
-    batteryAndCharging: {
-      batteryType: "Lithium Battery",
+    dcinputbattery: {
+      batteryType: "Lead acid Battery/Lithium Battery",
       ratedBatteryVoltage: "48Vdc",
-      batteryVoltageRange: "45-54Vdc",
-      maxPvChargingCurrent: "180A",
-      maxAcChargingCurrent: "120A",
-      maxChargingCurrent: "180A"
+      batteryVoltageRange: "42-60Vdc (default)",
+      maxContinuousCurrent: "120A",
+      maxAcChargingCurrent: "80A",
     },
     gridConnectedOperation: {
-      ratedOutputPower: "6300W",
-      ratedOutputVoltage: "230Vac / 240Vac",
-      gridVoltageRange: "180Vac ~ 270Vac",
-      ratedOutputFrequency: "50Hz / 60Hz",
+      maxContinuousPower: "6300W",
+      ratedOutputVoltage: "220Vac/230Vac/240Vac",
+      gridVoltageRange: "187Vac-264Vac",
+      ratedOutputFrequency: "50Hz/60Hz",
       frequencyRange: "47Hz~52Hz(50Hz),57Hz~62Hz(60Hz)",
-      ratedOutputCurrent: "27.4A / 26.3A",
-      powerFactor: "> 0.98 (Rated Power)"
+      ratedOutputCurrent: "28.6A/27.4A/26.2A",
+      maxContinuousCurrent: "21.7Aac",
+      inrushCurrent: "25.5A per phase / 20ms",
+      powerFactor: ">0.98(Rated Power)",
+      maxOutputFaultCurrent: "68A per phase / 1ms",
+      maxOutputOvercurrentProtection: "68A per phase",
     },
     offGridOperation: {
-      ratedInputVoltage: "230V / 240V",
-      mainsInputVoltageRange: "160Vac-280Vac",
-      ratedInputFrequency: "50Hz / 60Hz",
-      inputFrequencyRange: "45Hz~55Hz(50Hz),55Hz~65Hz(60Hz)"
-    },
-    acOutput: {
-      ratedOutputPower: "6300W",
-      ratedOutputVoltage: "230V / 240V",
-      outputVoltageAccuracy: "±1%",
-      outputFrequencyAccuracy: "±0.5%",
-      outputWave: "Pure Sine Wave"
+      ratedInputVoltage: "220V/230V/240V",
+      mainsInputVoltageRange: "165Vac-280Vac / 120Vac~280Vac (Can be set)",
+      ratedInputFrequency: "50Hz/60Hz",
+      inputFrequencyRange: "45Hz~55Hz(50Hz),55Hz~65Hz(60Hz)",
+      acOutput: {
+        maxContinuousPower: "6300W",
+        ratedOutputVoltage: "220V / 230V / 240V",
+        outputVoltageAccuracy: "±2%",
+        ratedInputFrequency: "50Hz/60Hz",
+        outputFrequencyAccuracy:"±1%",
+        outputWave: "Pure Sine Wave",
+      },
     },
     mixedOperation: {
-      ratedInputVoltage: "230V / 240V",
-      mainsInputVoltageRange: "180Vac-270Vac",
-      ratedInputFrequency: "50Hz / 60Hz",
-      inputFrequencyRange: "47Hz~52Hz(50Hz),57Hz~62Hz(60Hz)",
+      ratedInputVoltage: "220V / 230V / 240V",
+      mainsInputVoltageRange: "187Vac-264Vac",
+      ratedInputFrequency: "50Hz/60Hz",
+      inputFrequencyRange: "47Hz~52Hz(50Hz),57Hz-62Hz(60Hz)",
+      maxContinuousCurrent:"41.2Aac",
       acOutput: {
-        ratedOutputPower: "6300W",
-        ratedVoltage: "230Vac / 240Vac",
-        outputCurrent: "27.4A / 26.3A"
-      }
+        maxContinuousPower: "6300W",
+        ratedVoltage: "220Vac / 230Vac / 240Vac",
+        maxOutputFaultCurrent: "68A per phase / 1ms",
+        maxOutputOvercurrentProtection: "68A per phase",
+        outputCurrent: "28.6A/27.4A/26.2A",
+        maxContinuousCurrent: "21.7Aac",
+        inrushCurrent: "25.5A per phase / 20ms",
+      },
     },
     generalParameters: {
-      maxConversionEfficiency: "96.5% (peak value)",
-      mpptTrackingEfficiency: "≥99.9%",
-      transferTime: "10ms (Typical value)",
-      display: "LCD+LED",
-      coolingMethod: "Cooling fan in intelligent control",
-      communication: "RS485/WIFI Monitoring (Optional)",
+      maxConversionEfficiency: "94% (peak value)",
+      mpptTrackingEfficiency: "≥99.9",
+      transferTime: "10ms(Typical value)",
+      display: "LCD + LED",
+      coolingMethod: "Cooling fan in intelligent contro",
+      communication: "RS485/Mobile APP(WIFI Monitoring or GPRS monitoring)(Optional)",
       protectionDegree: "IP20",
-      installation: "Wall-Mounted"
+      installation: "Wall-Mounted",
     },
     protection: {
-      batteryLowVoltageAlarm: "46Vdc",
-      batteryLowVoltageProtection: "45Vdc",
+      batteryLowVoltageAlarm: "44Vdc (default value)",
+      batteryLowVoltageProtection: "42Vdc (default value)",
       antiIslandingProtection: "≤2S",
-      overloadPowerProtection: "Automatic Protection",
-      outputShortCircuitProtection: "Automatic Protection",
-      temperatureProtection: "> 90°C"
+      overloadPowerProtection: "Automatic Protection (battery mode), Circuit Breaker or Insurance (AC mode)",
+      outputShortCircuitProtection: "Automatic Protection (battery mode),Circuit Breaker or Insurance (AC mode)",
+      temperatureProtection: "> 90°C (turn off inverter and charging)",
     },
     environment: {
-      operatingTemperature: "-10°C~55°C",
+      operatingTemperature: "-10°C~50°C",
       storageTemperature: "-15°C~60°C",
-      noise: "≤50dB",
-      elevation: "3000m (derating above 2000m)",
-      humidity: "0%~95%, No condensation"
+      noiseLevel: "≤55dB",
+      elevation: "2000m ( More than derating)",
+      humidity: "0%~95% ,No condensation",
     },
     dimensionsAndWeight: {
-      productSize: "450*350*150",
-      packageSize: "520*420*200",
-      netWeight: "10",
-      grossWeight: "10.5"
-    }
-  }
+      productSize: "390*320*112",
+      packageSize: "465*375*187",
+      netWeight: "8",
+      grossWeight: "9.5",
+    },
+  },
 ];
 
 module.exports = specificationsData;
+
