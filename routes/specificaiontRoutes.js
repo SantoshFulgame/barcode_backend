@@ -24,11 +24,10 @@ router.post('/add-multiple', async (req, res) => {
   }
 });
 
-// Route to get specifications by a specific parameter (like 'xh6300')
 router.get('/get-specification/:model', async (req, res) => {
   try {
-    const model = req.params.model.toUpperCase();
-    const specification = await Specification.findOne({ model });
+    const model = req.params.model;
+    const specification = await Specification.findOne({ model: { $regex: new RegExp(`^${model}$`, 'i') } });
     if (!specification) {
       return res.status(404).json({ message: 'Specification not found' });
     }
@@ -37,5 +36,6 @@ router.get('/get-specification/:model', async (req, res) => {
     res.status(500).json({ message: 'Error fetching specification', error: error.message });
   }
 });
+
 
 module.exports = router;
